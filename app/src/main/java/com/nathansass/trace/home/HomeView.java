@@ -1,6 +1,5 @@
 package com.nathansass.trace.home;
 
-import com.nathansass.trace.models.CityListResponse;
 import com.nathansass.trace.models.NearbyListResponse;
 
 public interface HomeView {
@@ -9,8 +8,6 @@ public interface HomeView {
     void removeWait();
 
     void onFailure(String appErrorMessage);
-
-    void getCityListSuccess(CityListResponse cityListResponse);
 
     void getNearbyListSuccess(NearbyListResponse nearbyListResponse);
 

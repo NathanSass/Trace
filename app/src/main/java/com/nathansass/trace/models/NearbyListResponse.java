@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Generated;
 
 
@@ -13,18 +14,14 @@ public class NearbyListResponse {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     *
-     * @return
-     * The data
+     * @return The data
      */
     public List<NearbyListData> getData() {
         return data;
     }
 
     /**
-     *
-     * @param data
-     * The data
+     * @param data The data
      */
     public void setData(List<NearbyListData> data) {
         this.data = data;

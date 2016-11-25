@@ -1,6 +1,5 @@
 package com.nathansass.trace.network;
 
-import com.nathansass.trace.models.CityListResponse;
 import com.nathansass.trace.models.NearbyListResponse;
 
 import rx.Observable;
@@ -15,37 +14,6 @@ public class Service {
 
     public Service(NetworkService networkService) {
         this.networkService = networkService;
-    }
-
-    public Subscription getCityList(final GetCityListCallback callback) {
-
-        return networkService.getCityList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext(new Func1<Throwable, Observable<? extends CityListResponse>>() {
-                    @Override
-                    public Observable<? extends CityListResponse> call(Throwable throwable) {
-                        return Observable.error(throwable);
-                    }
-                })
-                .subscribe(new Subscriber<CityListResponse>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        callback.onError(new NetworkError(e));
-
-                    }
-
-                    @Override
-                    public void onNext(CityListResponse cityListResponse) {
-                        callback.onSuccess(cityListResponse);
-
-                    }
-                });
     }
 
     public Subscription getNearbyList(final GetNearbyListCallback callback) {
@@ -76,15 +44,11 @@ public class Service {
                 });
 
     }
+
     public interface GetNearbyListCallback {
         void onSuccess(NearbyListResponse nearbyListResponse);
 
         void onError(NetworkError networkError);
     }
 
-    public interface GetCityListCallback{
-        void onSuccess(CityListResponse cityListResponse);
-
-        void onError(NetworkError networkError);
-    }
 }

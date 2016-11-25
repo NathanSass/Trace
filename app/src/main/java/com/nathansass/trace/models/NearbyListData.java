@@ -14,72 +14,56 @@ public class NearbyListData {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     *
-     * @return
-     * The id
+     * @return The id
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     *
-     * @param id
-     * The id
+     * @param id The id
      */
     public void setId(Integer id) {
         this.id = id;
     }
 
     /**
-     *
-     * @return
-     * The items
+     * @return The items
      */
     public Integer getItems() {
         return items;
     }
 
     /**
-     *
-     * @param items
-     * The items
+     * @param items The items
      */
     public void setItems(Integer items) {
         this.items = items;
     }
 
     /**
-     *
-     * @return
-     * The category
+     * @return The category
      */
     public String getCategory() {
         return category;
     }
 
     /**
-     *
-     * @param category
-     * The category
+     * @param category The category
      */
     public void setCategory(String category) {
         this.category = category;
     }
 
     /**
-     *
-     * @return
-     * The url
+     * @return The url
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     *
-     * @param url
-     * The url
+     * @param url The url
      */
     public void setUrl(String url) {
         this.url = url;

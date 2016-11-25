@@ -77,6 +77,7 @@ public class NetworkModule {
             Retrofit retrofit) {
         return retrofit.create(NetworkService.class);
     }
+
     @Provides
     @Singleton
     @SuppressWarnings("unused")
