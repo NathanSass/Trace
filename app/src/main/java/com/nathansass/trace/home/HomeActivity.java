@@ -9,8 +9,9 @@ import android.widget.Toast;
 
 import com.nathansass.trace.BaseApp;
 import com.nathansass.trace.R;
-import com.nathansass.trace.models.CityListData;
 import com.nathansass.trace.models.CityListResponse;
+import com.nathansass.trace.models.NearbyListData;
+import com.nathansass.trace.models.NearbyListResponse;
 import com.nathansass.trace.network.Service;
 
 import javax.inject.Inject;
@@ -31,7 +32,8 @@ public class HomeActivity extends BaseApp implements HomeView {
         init();
 
         HomePresenter presenter = new HomePresenter(service, this);
-        presenter.getCityList();
+//        presenter.getCityList();
+        presenter.getNearbyList();
     }
 
     public void renderView(){
@@ -60,18 +62,32 @@ public class HomeActivity extends BaseApp implements HomeView {
     }
 
     @Override
-    public void getCityListSuccess(CityListResponse cityListResponse) {
-
-        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), cityListResponse.getData(),
+    public void getNearbyListSuccess(NearbyListResponse nearbyListResponse) {
+        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), nearbyListResponse.getData(),
                 new HomeAdapter.OnItemClickListener() {
                     @Override
-                    public void onClick(CityListData Item) {
-                        Toast.makeText(getApplicationContext(), Item.getName(),
+                    public void onClick(NearbyListData Item) {
+                        Toast.makeText(getApplicationContext(), Item.getCategory(),
                                 Toast.LENGTH_LONG).show();
                     }
                 });
 
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public void getCityListSuccess(CityListResponse cityListResponse) {
+
+//        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), cityListResponse.getData(),
+//                new HomeAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onClick(CityListData Item) {
+//                        Toast.makeText(getApplicationContext(), Item.getName(),
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//
+//        list.setAdapter(adapter);
 
     }
 }

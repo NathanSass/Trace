@@ -11,16 +11,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nathansass.trace.R;
-import com.nathansass.trace.models.CityListData;
+import com.nathansass.trace.models.NearbyListData;
 
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final OnItemClickListener listener;
-    private List<CityListData> data;
+    private List<NearbyListData> data;
     private Context context;
 
-    public HomeAdapter(Context context, List<CityListData> data, OnItemClickListener listener) {
+    public HomeAdapter(Context context, List<NearbyListData> data, OnItemClickListener listener) {
         this.data = data;
         this.listener = listener;
         this.context = context;
@@ -38,13 +38,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         holder.click(data.get(position), listener);
-        holder.tvCity.setText(data.get(position).getName());
-        holder.tvDesc.setText(data.get(position).getDescription());
+        holder.tvCity.setText(data.get(position).getCategory());
+//        holder.tvDesc.setText(data.get(position).getId());
 
-        String images = data.get(position).getBackground();
+        String image = data.get(position).getUrl();
 
         Glide.with(context)
-                .load(images)
+                .load(image)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .skipMemoryCache(true)
                 .into(holder.background);
@@ -59,7 +59,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
     public interface OnItemClickListener {
-        void onClick(CityListData Item);
+        void onClick(NearbyListData Item);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,11 +75,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
 
 
-        public void click(final CityListData cityListData, final OnItemClickListener listener) {
+        public void click(final NearbyListData nearbyListData, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(cityListData);
+                    listener.onClick(nearbyListData);
                 }
             });
         }

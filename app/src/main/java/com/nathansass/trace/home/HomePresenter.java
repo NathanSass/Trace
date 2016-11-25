@@ -1,6 +1,7 @@
 package com.nathansass.trace.home;
 
 import com.nathansass.trace.models.CityListResponse;
+import com.nathansass.trace.models.NearbyListResponse;
 import com.nathansass.trace.network.NetworkError;
 import com.nathansass.trace.network.Service;
 
@@ -34,6 +35,26 @@ public class HomePresenter {
                 view.onFailure(networkError.getAppErrorMessage());
             }
 
+        });
+
+        subscriptions.add(subscription);
+    }
+
+    public void getNearbyList() {
+        view.showWait();
+
+        Subscription subscription = service.getNearbyList(new Service.GetNearbyListCallback() {
+            @Override
+            public void onSuccess(NearbyListResponse nearbyListResponse) {
+                view.removeWait();
+                view.getNearbyListSuccess(nearbyListResponse);
+            }
+
+            @Override
+            public void onError(NetworkError networkError) {
+                view.removeWait();
+                view.onFailure(networkError.getAppErrorMessage());
+            }
         });
 
         subscriptions.add(subscription);
