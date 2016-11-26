@@ -9,7 +9,7 @@ import com.nathansass.trace.network.NetworkModule;
 
 import java.io.File;
 
-public class BaseApp  extends AppCompatActivity {
+public class BaseApp extends AppCompatActivity {
     Deps deps;
 
     @Override

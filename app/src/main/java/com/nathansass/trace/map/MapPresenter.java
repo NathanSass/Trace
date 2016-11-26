@@ -10,10 +10,10 @@ import rx.subscriptions.CompositeSubscription;
 
 public class MapPresenter {
     private final Service service;
-    private final MapView view;
+    private final MapCoolView view;
     private CompositeSubscription subscriptions;
 
-    public MapPresenter(Service service, MapView view) {
+    public MapPresenter(Service service, MapCoolView view) {
         this.service = service;
         this.view = view;
         this.subscriptions = new CompositeSubscription();
