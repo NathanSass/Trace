@@ -13,4 +13,6 @@ public interface HomeView {
 
     void hideKeyboard();
 
+    void navToMapActivity();
+
 }

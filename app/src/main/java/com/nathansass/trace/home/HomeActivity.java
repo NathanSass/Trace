@@ -1,6 +1,7 @@
 package com.nathansass.trace.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +9,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.nathansass.trace.BaseApp;
 import com.nathansass.trace.R;
+import com.nathansass.trace.map.MapActivity;
 import com.nathansass.trace.models.NearbyListData;
 import com.nathansass.trace.models.NearbyListResponse;
 import com.nathansass.trace.network.Service;
@@ -54,6 +55,12 @@ public class HomeActivity extends BaseApp implements HomeView {
     }
 
     @Override
+    public void navToMapActivity() {
+        Intent i = new Intent(this, MapActivity.class);
+        startActivity(i);
+    }
+
+    @Override
     public void showWait() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -83,8 +90,7 @@ public class HomeActivity extends BaseApp implements HomeView {
                 new HomeAdapter.OnItemClickListener() {
                     @Override
                     public void onClick(NearbyListData Item) {
-                        Toast.makeText(getApplicationContext(), Item.getCategory(),
-                                Toast.LENGTH_LONG).show();
+                        navToMapActivity();
                     }
                 });
 

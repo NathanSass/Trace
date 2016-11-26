@@ -5,4 +5,5 @@
 
     <dimen name="counter_margin">6dp</dimen>
     <dimen name="counter_textSize">12dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
