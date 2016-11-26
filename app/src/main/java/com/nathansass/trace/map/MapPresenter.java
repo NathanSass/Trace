@@ -1,7 +1,10 @@
 package com.nathansass.trace.map;
 
+import com.nathansass.trace.models.NearbyListResponse;
+import com.nathansass.trace.network.NetworkError;
 import com.nathansass.trace.network.Service;
 
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -19,6 +22,26 @@ public class MapPresenter {
         this.subscriptions = new CompositeSubscription();
     }
 
+    public void getNearbyItemsForMap() {
+        //network call here then pass in items to main activity to display them on the map\
+        view.showWait();
+        Subscription subscription = service.getNearbyList(new Service.GetNearbyListCallback() {
+            @Override
+            public void onSuccess(NearbyListResponse nearbyListResponse) {
+                view.removeWait();
+                view.getMapItemsListSuccess(nearbyListResponse);
+            }
+
+            @Override
+            public void onError(NetworkError networkError) {
+                view.removeWait();
+                view.onFailure(networkError.getAppErrorMessage());
+            }
+        });
+
+        subscriptions.add(subscription);
+
+    }
     public void onStop() {
         subscriptions.unsubscribe();
     }
