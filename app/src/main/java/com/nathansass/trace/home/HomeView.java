@@ -11,4 +11,6 @@ public interface HomeView {
 
     void getNearbyListSuccess(NearbyListResponse nearbyListResponse);
 
+    void hideKeyboard();
+
 }

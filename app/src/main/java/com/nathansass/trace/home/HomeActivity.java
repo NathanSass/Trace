@@ -1,9 +1,12 @@
 package com.nathansass.trace.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,8 +19,7 @@ import com.nathansass.trace.network.Service;
 import javax.inject.Inject;
 
 public class HomeActivity extends BaseApp implements HomeView {
-
-    private RecyclerView list;
+    private RecyclerView rvList;
     @Inject
     public Service service;
     ProgressBar progressBar;
@@ -36,12 +38,19 @@ public class HomeActivity extends BaseApp implements HomeView {
 
     public void renderView() {
         setContentView(R.layout.activity_main);
-        list = (RecyclerView) findViewById(R.id.rvList);
+        rvList = (RecyclerView) findViewById(R.id.rvList);
         progressBar = (ProgressBar) findViewById(R.id.pbProgress);
+        rvList.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
     }
 
     public void init() {
-        list.setLayoutManager(new LinearLayoutManager(this));
+        rvList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -60,6 +69,15 @@ public class HomeActivity extends BaseApp implements HomeView {
     }
 
     @Override
+    public void hideKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) this.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
     public void getNearbyListSuccess(NearbyListResponse nearbyListResponse) {
         HomeAdapter adapter = new HomeAdapter(getApplicationContext(), nearbyListResponse.getData(),
                 new HomeAdapter.OnItemClickListener() {
@@ -70,7 +88,7 @@ public class HomeActivity extends BaseApp implements HomeView {
                     }
                 });
 
-        list.setAdapter(adapter);
+        rvList.setAdapter(adapter);
     }
 
 }

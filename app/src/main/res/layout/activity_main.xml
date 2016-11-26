@@ -11,10 +11,77 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.nathansass.trace.home.HomeActivity">
 
+    <RelativeLayout
+        android:id="@+id/rlSearchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search"
+            android:textColorHint="@color/secondaryText"
+            android:textColor="@color/primaryText"
+            android:textSize="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etSearch"
+            android:layout_marginTop="20dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/searchOption"
+                android:text="Images"/>
+
+            <View
+                style="@style/searchOptionSpacer"/>
+
+            <TextView
+                style="@style/searchOption"
+                android:text="Journal"/>
+
+            <View
+                style="@style/searchOptionSpacer"/>
+
+            <TextView
+                style="@style/searchOption"
+                android:text="People"/>
+
+            <View
+                style="@style/searchOptionSpacer"/>
+
+            <TextView
+                style="@style/searchOption"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Places"
+                android:textColor="@color/primaryText"/>
+
+            <View
+                style="@style/searchOptionSpacer"
+                android:layout_weight="5"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/rlSearchBar"
         android:divider="#00000000"/>
 
     <ProgressBar

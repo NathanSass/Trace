@@ -2,10 +2,12 @@ package com.nathansass.trace.home;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +16,7 @@ import com.nathansass.trace.R;
 import com.nathansass.trace.models.NearbyListData;
 
 import java.util.List;
+import java.util.Random;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final OnItemClickListener listener;
@@ -26,7 +29,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         this.context = context;
     }
 
-
     @Override
     public HomeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, null);
@@ -34,23 +36,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         holder.click(data.get(position), listener);
-        holder.tvCity.setText(data.get(position).getCategory());
-//        holder.tvDesc.setText(data.get(position).getId());
+        holder.tvNearbyCount.setText(data.get(position).getItems() + "");
+
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            holder.rlListItem.setGravity(Gravity.RIGHT);
+        }
 
         String image = data.get(position).getUrl();
-
         Glide.with(context)
                 .load(image)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .skipMemoryCache(true)
-                .into(holder.background);
+                .into(holder.ivNearbyImage);
 
     }
-
 
     @Override
     public int getItemCount() {
@@ -63,17 +66,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCity, tvDesc;
-        ImageView background;
+        TextView tvNearbyCount;
+        ImageView ivNearbyImage;
+        RelativeLayout rlListItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvCity = (TextView) itemView.findViewById(R.id.city);
-            tvDesc = (TextView) itemView.findViewById(R.id.hotel);
-            background = (ImageView) itemView.findViewById(R.id.image);
-
+            tvNearbyCount = (TextView) itemView.findViewById(R.id.tvNearbyCount);
+            ivNearbyImage = (ImageView) itemView.findViewById(R.id.ivNearbyImage);
+            rlListItem = (RelativeLayout) itemView.findViewById(R.id.rlListItem);
         }
-
 
         public void click(final NearbyListData nearbyListData, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +86,5 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             });
         }
     }
-
 
 }
