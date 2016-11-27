@@ -1,6 +1,7 @@
 package com.nathansass.trace.map;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -34,8 +37,8 @@ public class MapActivity extends BaseApp implements MapCoolView {
     private MapView mapboxView;
     private MapPresenter mapPresenter;
     private ImageView ivNearbyImage;
-    private TextView tvDate;
     private TextView tvUsername;
+    private Marker lastMarkerHighlighted = null;
 
     @Inject
     public Service service;
@@ -45,6 +48,7 @@ public class MapActivity extends BaseApp implements MapCoolView {
     private MapboxMap coolMap;
 
     private List<NearbyListData> nearbyListDatas;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,6 @@ public class MapActivity extends BaseApp implements MapCoolView {
         setContentView(R.layout.activity_map);
         progressBar = (ProgressBar) findViewById(R.id.pbProgress);
         ivNearbyImage = (ImageView) findViewById(R.id.ivNearbyImage);
-        tvDate = (TextView) findViewById(R.id.tvDate);
         tvUsername = (TextView) findViewById(R.id.tvUsername);
 
         showWait();
@@ -78,28 +81,46 @@ public class MapActivity extends BaseApp implements MapCoolView {
         });
     }
 
-    public void setMarkerClickListener(MapboxMap mapboxMap){
+    public void setMarkerClickListener(MapboxMap mapboxMap) {
         mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 vibrate();
                 setItemInView(Integer.parseInt(marker.getTitle()));
+                changeMarkerColor(marker);
                 return true;
             }
         });
     }
 
+    public void changeMarkerColor(Marker marker) {
+        if (lastMarkerHighlighted != null) {
+            lastMarkerHighlighted.setIcon(getStandardIcon());
+        }
+        marker.setIcon(getSelectedIcon());
+        lastMarkerHighlighted = marker;
+    }
+
+    public Icon getStandardIcon() {
+        IconFactory iconFactory = IconFactory.getInstance(MapActivity.this);
+        Drawable iconDrawable = ContextCompat.getDrawable(MapActivity.this, R.drawable.grey_marker);
+        Icon icon = iconFactory.fromDrawable(iconDrawable);
+        return icon;
+    }
+
+    public Icon getSelectedIcon() {
+        IconFactory iconFactory = IconFactory.getInstance(MapActivity.this);
+        Drawable iconDrawable = ContextCompat.getDrawable(MapActivity.this, R.drawable.yellow_marker);
+        Icon icon = iconFactory.fromDrawable(iconDrawable);
+        return icon;
+    }
+
     public void setItemInView(int position) {
         NearbyListData currentItem = nearbyListDatas.get(position);
-        tvDate.setText(currentItem.getDate());
         tvUsername.setText(currentItem.getUsername());
-//        Random random = new Random();
-//        if (random.nextBoolean()) {
-//
-//        }
         Glide.with(getApplicationContext())
                 .load(currentItem.getUrl())
-                .placeholder(ContextCompat.getDrawable(getApplicationContext(), R.drawable.url))
+                .placeholder(ContextCompat.getDrawable(getApplicationContext(), R.drawable.placeholder_long))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .skipMemoryCache(true)
                 .into(ivNearbyImage);
@@ -108,10 +129,15 @@ public class MapActivity extends BaseApp implements MapCoolView {
     @Override
     public void getMapItemsListSuccess(NearbyListResponse nearbyListResponse) {
         nearbyListDatas = nearbyListResponse.getData();
-        for(int i = 0; i < nearbyListDatas.size(); i++) {
+        for (int i = 0; i < nearbyListDatas.size(); i++) {
             NearbyListData currentPlace = nearbyListDatas.get(i);
             buildMarker(currentPlace.getLat(), currentPlace.getLng(), i);
         }
+
+        // Set the first item
+        Marker marker = getMap().getMarkers().get(0);
+        setItemInView(0);
+        changeMarkerColor(marker);
     }
 
     @Override
@@ -119,7 +145,8 @@ public class MapActivity extends BaseApp implements MapCoolView {
         getMap().addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lng))
                 .title(position + "")
-                .snippet("None currently"));
+                .snippet("None currently")
+                .icon(getStandardIcon()));
     }
 
     public MapboxMap getMap() {

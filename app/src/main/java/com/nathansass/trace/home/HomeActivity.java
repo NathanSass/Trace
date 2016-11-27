@@ -35,6 +35,7 @@ public class HomeActivity extends BaseApp implements HomeView {
 
         HomePresenter presenter = new HomePresenter(service, this);
         presenter.getNearbyList();
+
     }
 
     public void renderView() {
